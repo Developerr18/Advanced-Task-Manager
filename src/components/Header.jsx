@@ -1,6 +1,6 @@
 const Header = () => {
   return (
-    <div className="flex flex-col items-center p-7">
+    <div className="flex flex-col items-center rounded-t p-7 text-white bg-indigo-500">
       <h1 className="sm:text-4xl text-3xl font-bold mb-2">
         Advanced Task Manager
       </h1>
