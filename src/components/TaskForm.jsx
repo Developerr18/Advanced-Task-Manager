@@ -1,6 +1,6 @@
 const TaskForm = () => {
   return (
-    <div>
+    <>
       <div className="flex gap-4 mb-5 flex-wrap">
         <div className="flex-1 min-w-48">
           <label className="block mb-1 font-semibold text-gray-700">
@@ -59,7 +59,7 @@ const TaskForm = () => {
       <button className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all mb-5">
         Add Task
       </button>
-    </div>
+    </>
   );
 };
 

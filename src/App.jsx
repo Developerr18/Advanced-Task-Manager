@@ -1,3 +1,4 @@
+import EditModel from "./components/EditModel";
 import Header from "./components/Header";
 import TaskColumns from "./components/TaskColumns";
 import TaskFilters from "./components/TaskFilters";
@@ -14,6 +15,7 @@ export default function TaskManager() {
         </div>
         <TaskColumns />
       </div>
+      <EditModel />
 
       {/* Notification */}
       <div className="hidden fixed top-5 right-5 px-5 py-4 rounded-lg text-white font-semibold z-50 max-w-xs shadow-lg bg-green-500">
