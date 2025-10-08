@@ -1,13 +1,24 @@
 import Header from "./components/Header";
-import TaskControls from "./components/TaskControls";
+import TaskColumns from "./components/TaskColumns";
+import TaskFilters from "./components/TaskFilters";
+import TaskForm from "./components/TaskForm";
 
-const App = () => {
+export default function TaskManager() {
   return (
-    <div className="max-w-7xl mx-auto shadow-lg">
-      <Header />
-      <TaskControls />
+    <div className="min-h-screen bg-gradient-to-br from-indigo-400 to-purple-500 p-5">
+      <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <Header />
+        <div className="p-8 border-b border-gray-200">
+          <TaskForm />
+          <TaskFilters />
+        </div>
+        <TaskColumns />
+      </div>
+
+      {/* Notification */}
+      <div className="hidden fixed top-5 right-5 px-5 py-4 rounded-lg text-white font-semibold z-50 max-w-xs shadow-lg bg-green-500">
+        Task added successfully
+      </div>
     </div>
   );
-};
-
-export default App;
+}

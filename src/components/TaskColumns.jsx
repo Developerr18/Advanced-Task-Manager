@@ -1,4 +1,4 @@
-const TaskFilters = () => {
+const TaskColumns = () => {
   return (
     <div className="flex gap-4 items-center flex-wrap">
       <div className="flex items-center gap-2">
@@ -46,4 +46,4 @@ const TaskFilters = () => {
   );
 };
 
-export default TaskFilters;
+export default TaskColumns;

@@ -1,25 +1,26 @@
 const Header = () => {
   return (
-    <div className="flex flex-col items-center rounded-t p-7 text-white bg-indigo-500">
-      <h1 className="sm:text-4xl text-3xl font-bold mb-2">
-        Advanced Task Manager
-      </h1>
-      <p>Organize your tasks with priority, categories, and smart filtering</p>
-      <div className="flex gap-5 mt-5">
-        <div className="flex flex-col items-center">
-          <div className="text-3xl font-bold">5</div>
-          <div>Total Tasks</div>
+    <header className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-8 text-center">
+      <h1 className="text-4xl font-bold mb-2">Advanced Task Manager</h1>
+      <p className="text-lg opacity-90">
+        Organize your tasks with priority, categories, and smart filtering
+      </p>
+
+      <div className="flex justify-center gap-8 mt-6">
+        <div className="text-center">
+          <div className="text-3xl font-bold">0</div>
+          <div className="text-sm opacity-90">Total Tasks</div>
         </div>
-        <div className="flex flex-col items-center">
-          <div className="text-3xl font-bold">1</div>
-          <div>Completed Tasks</div>
+        <div className="text-center">
+          <div className="text-3xl font-bold">0</div>
+          <div className="text-sm opacity-90">Completed</div>
         </div>
-        <div className="flex flex-col items-center">
-          <div className="text-3xl font-bold">4</div>
-          <div>Pending Tasks</div>
+        <div className="text-center">
+          <div className="text-3xl font-bold">0</div>
+          <div className="text-sm opacity-90">Pending</div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

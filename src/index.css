@@ -1,6 +1,4 @@
 @import "tailwindcss";
 
-body {
-    padding: 20px;
-    background-color: rgb(88, 88, 88);
+.header {
 }
