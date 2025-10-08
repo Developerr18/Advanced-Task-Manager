@@ -6,7 +6,7 @@ const TaskFilters = () => {
         <input
           type="text"
           placeholder="Search tasks..."
-          className="ml-2 border border-gray-200 rounded p-2 w-full"
+          className="ml-2 border border-gray-300 rounded p-2 w-full"
           id="search"
         />
       </div>
@@ -14,7 +14,7 @@ const TaskFilters = () => {
         <label htmlFor="category">Category:</label>
         <select
           id="category"
-          className="border border-gray-200 p-2 rounded ml-2 w-full"
+          className="border border-gray-300 p-2 rounded ml-2 w-full"
         >
           <option value="all-categories">All Categories</option>
           <option value="work">Work</option>
@@ -29,7 +29,7 @@ const TaskFilters = () => {
         <label htmlFor="priority">Priority:</label>
         <select
           id="priority"
-          className="border border-gray-200 p-2 rounded ml-2 w-full"
+          className="border border-gray-300 p-2 rounded ml-2 w-full"
         >
           <option value="all-priorities">All Priorities</option>
           <option value="high">High</option>
@@ -41,7 +41,7 @@ const TaskFilters = () => {
         <label htmlFor="sort">Sort by:</label>
         <select
           id="sort"
-          className="border border-gray-200 p-2 rounded ml-2 w-full"
+          className="border border-gray-300 p-2 rounded ml-2 w-full"
         >
           <option value="date-created">Date Created</option>
           <option value="duedate">Due Date</option>

@@ -2,7 +2,7 @@ import TaskFilters from "./TaskFilters";
 
 const TaskControls = () => {
   return (
-    <div className="flex flex-col p-8 text-white bg-indigo-400">
+    <div className="flex flex-col p-8 bg-gray-100">
       <div className="task-form flex justify-between gap-5 flex-wrap">
         <div className="flex flex-col flex-2">
           <label htmlFor="task-title">Task Title</label>
@@ -60,11 +60,14 @@ const TaskControls = () => {
         ></textarea>
       </div>
 
-      <button className="bg-purple-400 rounded mt-5 w-full sm:max-w-50 p-2 cursor-pointer">
+      <button className="bg-purple-500 hover:bg-purple-400 text-white rounded mt-5 w-full sm:max-w-40 p-2 cursor-pointer">
         Add Task
       </button>
 
       <TaskFilters />
+      <button className="bg-blue-500 text-white p-2 rounded hover:bg-blue-400 cursor-pointer mt-5 sm:max-w-40">
+        Clear Filters
+      </button>
     </div>
   );
 };
