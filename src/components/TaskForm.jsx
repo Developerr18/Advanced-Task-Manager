@@ -1,4 +1,25 @@
+import { useState } from "react";
+import useTaskStore from "../store/taskStore";
+
 const TaskForm = () => {
+  const { addTask } = useTaskStore();
+  const [taskData, setTaskData] = useState({
+    title: "",
+    category: "education",
+    priority: "medium",
+    description: "",
+  });
+
+  const handleSubmit = () => {
+    addTask(taskData);
+    setTaskData({
+      title: "",
+      category: "education",
+      priority: "medium",
+      description: "",
+    });
+  };
+
   return (
     <>
       <div className="flex gap-4 mb-5 flex-wrap">
@@ -8,15 +29,26 @@ const TaskForm = () => {
           </label>
           <input
             type="text"
+            value={taskData.title}
+            onChange={(e) =>
+              setTaskData({ ...taskData, title: e.target.value })
+            }
             placeholder="Enter task title..."
             className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors"
           />
         </div>
+
         <div className="flex-1 min-w-48">
           <label className="block mb-1 font-semibold text-gray-700">
             Category
           </label>
-          <select className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors">
+          <select
+            onChange={(e) =>
+              setTaskData({ ...taskData, category: e.target.value })
+            }
+            value={taskData.category}
+            className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors"
+          >
             <option value="work">Work</option>
             <option value="personal">Personal</option>
             <option value="shopping">Shopping</option>
@@ -25,16 +57,24 @@ const TaskForm = () => {
             <option value="other">Other</option>
           </select>
         </div>
+
         <div className="flex-1 min-w-48">
           <label className="block mb-1 font-semibold text-gray-700">
             Priority
           </label>
-          <select className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors">
+          <select
+            value={taskData.priority}
+            onChange={(e) =>
+              setTaskData({ ...taskData, priority: e.target.value })
+            }
+            className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors"
+          >
             <option value="low">Low</option>
             <option value="medium">Medium</option>
             <option value="high">High</option>
           </select>
         </div>
+
         <div className="flex-1 min-w-48">
           <label className="block mb-1 font-semibold text-gray-700">
             Due Date
@@ -51,12 +91,20 @@ const TaskForm = () => {
           Description
         </label>
         <textarea
+          value={taskData.description}
+          onChange={(e) =>
+            setTaskData({ ...taskData, description: e.target.value })
+          }
           placeholder="Task description (optional)..."
           className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base resize-y min-h-20 transition-colors"
         />
       </div>
 
-      <button className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all mb-5">
+      <button
+        type="submit"
+        onClick={handleSubmit}
+        className="cursor-pointer px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all mb-5"
+      >
         Add Task
       </button>
     </>
