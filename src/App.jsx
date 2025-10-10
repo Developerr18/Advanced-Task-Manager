@@ -6,12 +6,16 @@ import TaskForm from "./components/TaskForm";
 import useTaskStore from "./store/taskStore";
 
 export default function TaskManager() {
-  const { tasks } = useTaskStore();
+  const { tasks, isEditModalOpen } = useTaskStore();
   console.log(tasks);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-400 to-purple-500 p-5">
-      <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
+      <div
+        className={`${
+          isEditModalOpen ? "blur-sm" : ""
+        } max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden`}
+      >
         <Header />
         <div className="p-8 border-b border-gray-200">
           <TaskForm />

@@ -1,20 +1,44 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+const defaultData = [
+  {
+    id: 1,
+    title: "Task 1",
+    description: "Description 1",
+    category: "Category 1",
+    priority: "High",
+    status: "todo",
+  },
+  {
+    id: 2,
+    title: "Task 2",
+    description: "Description 2",
+    category: "Category 2",
+    priority: "Medium",
+    status: "inProgress",
+  },
+  {
+    id: 3,
+    title: "Task 3",
+    description: "Description 3",
+    category: "Category 3",
+    priority: "Low",
+    status: "completed",
+  },
+];
+
 // create store
 const useTaskStore = create(
   persist(
     (set) => ({
-      tasks: [],
+      tasks: defaultData,
       selectedTask: null,
       isEditModalOpen: false,
 
       addTask: (task) =>
         set((state) => ({
-          tasks: [
-            ...state.tasks,
-            { ...task, isStarted: false, isCompleted: false },
-          ],
+          tasks: [...state.tasks, { ...task, status: "todo" }],
         })),
 
       handleDeleteTask: (id) =>
@@ -23,14 +47,14 @@ const useTaskStore = create(
       handleStartTask: (id) =>
         set((state) => ({
           tasks: state.tasks.map((task) =>
-            task.id === id ? { ...task, isStarted: true } : task
+            task.id === id ? { ...task, status: "inProgress" } : task
           ),
         })),
 
       handleCompleteTask: (id) =>
         set((state) => ({
           tasks: state.tasks.map((task) =>
-            task.id === id ? { ...task, isCompleted: true } : task
+            task.id === id ? { ...task, status: "completed" } : task
           ),
         })),
 

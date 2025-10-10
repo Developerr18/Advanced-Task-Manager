@@ -34,7 +34,7 @@ const TaskItem = ({ task }) => {
         </div>
 
         <div className="flex gap-2 flex-wrap">
-          {!task.isStarted && !task.isCompleted && (
+          {task.status === "todo" && (
             <button
               onClick={() => handleStartTask(task.id)}
               className="cursor-pointer px-3 py-1 text-xs bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
@@ -49,6 +49,7 @@ const TaskItem = ({ task }) => {
           >
             Edit
           </button>
+
           <button
             onClick={() => handleDeleteTask(task.id)}
             className="cursor-pointer px-3 py-1 text-xs bg-red-500 text-white rounded-md hover:bg-red-600 transition"
@@ -56,7 +57,7 @@ const TaskItem = ({ task }) => {
             Delete
           </button>
 
-          {!task.isCompleted && (
+          {task.status !== "completed" && (
             <button
               onClick={() => handleCompleteTask(task.id)}
               className="cursor-pointer px-3 py-1 text-xs bg-green-500 text-white rounded-md hover:bg-green-600 transition"

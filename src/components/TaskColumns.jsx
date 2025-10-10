@@ -5,13 +5,9 @@ import TaskItem from "./TaskItem";
 const TaskColumns = () => {
   const { tasks } = useTaskStore();
 
-  const todoTasks = tasks.filter(
-    (task) => !task.isStarted && !task.isCompleted
-  );
-  const inProgressTasks = tasks.filter(
-    (task) => task.isStarted && !task.isCompleted
-  );
-  const completedTasks = tasks.filter((task) => task.isCompleted);
+  const todoTasks = tasks.filter((task) => task.status === "todo");
+  const inProgressTasks = tasks.filter((task) => task.status === "inProgress");
+  const completedTasks = tasks.filter((task) => task.status === "completed");
 
   return (
     <div className="p-8">
