@@ -3,7 +3,7 @@ import useTaskStore from "../store/taskStore";
 
 const TaskForm = () => {
   const { addTask } = useTaskStore();
-  const [taskData, setTaskData] = useState({
+  const [newTask, setNewTask] = useState({
     title: "",
     category: "education",
     priority: "medium",
@@ -11,8 +11,9 @@ const TaskForm = () => {
   });
 
   const handleSubmit = () => {
-    addTask(taskData);
-    setTaskData({
+    if (!newTask.title) return;
+    addTask({ ...newTask, id: Date.now() });
+    setNewTask({
       title: "",
       category: "education",
       priority: "medium",
@@ -29,10 +30,8 @@ const TaskForm = () => {
           </label>
           <input
             type="text"
-            value={taskData.title}
-            onChange={(e) =>
-              setTaskData({ ...taskData, title: e.target.value })
-            }
+            value={newTask.title}
+            onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
             placeholder="Enter task title..."
             className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors"
           />
@@ -44,9 +43,9 @@ const TaskForm = () => {
           </label>
           <select
             onChange={(e) =>
-              setTaskData({ ...taskData, category: e.target.value })
+              setNewTask({ ...newTask, category: e.target.value })
             }
-            value={taskData.category}
+            value={newTask.category}
             className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors"
           >
             <option value="work">Work</option>
@@ -63,9 +62,9 @@ const TaskForm = () => {
             Priority
           </label>
           <select
-            value={taskData.priority}
+            value={newTask.priority}
             onChange={(e) =>
-              setTaskData({ ...taskData, priority: e.target.value })
+              setNewTask({ ...newTask, priority: e.target.value })
             }
             className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors"
           >
@@ -91,9 +90,9 @@ const TaskForm = () => {
           Description
         </label>
         <textarea
-          value={taskData.description}
+          value={newTask.description}
           onChange={(e) =>
-            setTaskData({ ...taskData, description: e.target.value })
+            setNewTask({ ...newTask, description: e.target.value })
           }
           placeholder="Task description (optional)..."
           className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base resize-y min-h-20 transition-colors"

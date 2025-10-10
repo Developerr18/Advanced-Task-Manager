@@ -1,7 +1,10 @@
+import useTaskStore from "../store/taskStore";
 import EmptyTaskList from "./EmptyTasklist";
 import TaskItem from "./TaskItem";
 
 const TaskColumns = () => {
+  const { tasks } = useTaskStore();
+
   return (
     <div className="p-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -11,12 +14,16 @@ const TaskColumns = () => {
             <h3 className="text-xl font-bold flex items-center gap-2">
               <span>📋</span> To Do
               <span className="bg-indigo-600 text-white px-2 py-1 rounded-full text-xs">
-                0
+                {tasks.length}
               </span>
             </h3>
           </div>
 
-          <TaskItem />
+          {tasks.length > 0 ? (
+            tasks.map((task) => <TaskItem key={task.id} task={task} />)
+          ) : (
+            <EmptyTaskList />
+          )}
         </div>
 
         {/* In Progress Column */}

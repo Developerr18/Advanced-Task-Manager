@@ -1,10 +1,15 @@
+import { useEffect } from "react";
 import EditModel from "./components/EditModel";
 import Header from "./components/Header";
 import TaskColumns from "./components/TaskColumns";
 import TaskFilters from "./components/TaskFilters";
 import TaskForm from "./components/TaskForm";
+import useTaskStore from "./store/taskStore";
 
 export default function TaskManager() {
+  const { tasks } = useTaskStore();
+  console.log(tasks);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-400 to-purple-500 p-5">
       <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
