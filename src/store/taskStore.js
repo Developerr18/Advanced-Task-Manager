@@ -6,6 +6,8 @@ const useTaskStore = create(
   persist(
     (set) => ({
       tasks: [],
+      selectedTask: null,
+      isEditModalOpen: false,
 
       addTask: (task) =>
         set((state) => ({
@@ -29,6 +31,18 @@ const useTaskStore = create(
         set((state) => ({
           tasks: state.tasks.map((task) =>
             task.id === id ? { ...task, isCompleted: true } : task
+          ),
+        })),
+
+      openEditModal: (task) =>
+        set({ selectedTask: task, isEditModalOpen: true }),
+
+      closeEditModal: () => set({ selectedTask: null, isEditModalOpen: false }),
+
+      updateTask: (updatedTask) =>
+        set((state) => ({
+          tasks: state.tasks.map((task) =>
+            task.id === updatedTask.id ? updatedTask : task
           ),
         })),
     }),

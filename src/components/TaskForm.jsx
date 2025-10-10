@@ -18,6 +18,7 @@ const TaskForm = () => {
       category: "education",
       priority: "medium",
       description: "",
+      status: "todo",
     });
   };
 

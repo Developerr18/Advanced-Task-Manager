@@ -1,8 +1,12 @@
 import useTaskStore from "../store/taskStore";
 
 const TaskItem = ({ task }) => {
-  const { handleDeleteTask, handleStartTask, handleCompleteTask } =
-    useTaskStore();
+  const {
+    handleDeleteTask,
+    handleStartTask,
+    handleCompleteTask,
+    openEditModal,
+  } = useTaskStore();
 
   return (
     <div className="bg-white mb-4 rounded-lg p-5 shadow-md hover:shadow-lg transition-all border-l-4 border-yellow-500">
@@ -39,7 +43,10 @@ const TaskItem = ({ task }) => {
             </button>
           )}
 
-          <button className="cursor-pointer px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition">
+          <button
+            onClick={() => openEditModal(task)}
+            className="cursor-pointer px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition"
+          >
             Edit
           </button>
           <button
