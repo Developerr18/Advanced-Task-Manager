@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import EditModel from "./components/EditModel";
 import Header from "./components/Header";
 import TaskColumns from "./components/TaskColumns";

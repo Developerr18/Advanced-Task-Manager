@@ -5,6 +5,11 @@ import TaskItem from "./TaskItem";
 const TaskColumns = () => {
   const { tasks } = useTaskStore();
 
+  const inProgressTasks = tasks.filter(
+    (task) => task.isStarted && !task.isCompleted
+  );
+  const completedTasks = tasks.filter((task) => task.isCompleted);
+
   return (
     <div className="p-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -36,7 +41,14 @@ const TaskColumns = () => {
               </span>
             </h3>
           </div>
-          <EmptyTaskList />
+
+          {inProgressTasks.length > 0 ? (
+            inProgressTasks.map((task) => (
+              <TaskItem key={task.id} task={task} />
+            ))
+          ) : (
+            <EmptyTaskList />
+          )}
         </div>
 
         {/* Completed Column */}
@@ -49,7 +61,12 @@ const TaskColumns = () => {
               </span>
             </h3>
           </div>
-          <EmptyTaskList />
+
+          {completedTasks.length > 0 ? (
+            completedTasks.map((task) => <TaskItem key={task.id} task={task} />)
+          ) : (
+            <EmptyTaskList />
+          )}
         </div>
       </div>
     </div>

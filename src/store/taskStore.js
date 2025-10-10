@@ -6,7 +6,21 @@ const useTaskStore = create(
   persist(
     (set) => ({
       tasks: [],
-      addTask: (task) => set((state) => ({ tasks: [...state.tasks, task] })),
+      addTask: (task) =>
+        set((state) => ({
+          tasks: [
+            ...state.tasks,
+            { ...task, isStarted: false, isCompleted: false },
+          ],
+        })),
+      deleteTask: (id) =>
+        set((state) => ({ tasks: state.tasks.filter((t) => t.id !== id) })),
+      handleStartTask: (id) =>
+        set((state) => ({
+          tasks: state.tasks.map((task) =>
+            task.id === id ? { ...task, isStarted: !task.isStarted } : task
+          ),
+        })),
     }),
     {
       name: "task-storage", // 🔹 name of the key in localStorage

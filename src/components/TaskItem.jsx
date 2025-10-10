@@ -1,4 +1,8 @@
+import useTaskStore from "../store/taskStore";
+
 const TaskItem = ({ task }) => {
+  const { deleteTask, handleStartTask } = useTaskStore();
+
   return (
     <div className="bg-white mb-4 rounded-lg p-5 shadow-md hover:shadow-lg transition-all border-l-4 border-yellow-500">
       <div className="flex justify-between items-start mb-2">
@@ -25,13 +29,19 @@ const TaskItem = ({ task }) => {
         </div>
 
         <div className="flex gap-2 flex-wrap">
-          <button className="cursor-pointer px-3 py-1 text-xs bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
+          <button
+            onClick={() => handleStartTask(task.id)}
+            className="cursor-pointer px-3 py-1 text-xs bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+          >
             Start
           </button>
           <button className="cursor-pointer px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition">
             Edit
           </button>
-          <button className="cursor-pointer px-3 py-1 text-xs bg-red-500 text-white rounded-md hover:bg-red-600 transition">
+          <button
+            onClick={() => deleteTask(task.id)}
+            className="cursor-pointer px-3 py-1 text-xs bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+          >
             Delete
           </button>
           <button className="cursor-pointer px-3 py-1 text-xs bg-green-500 text-white rounded-md hover:bg-green-600 transition">
