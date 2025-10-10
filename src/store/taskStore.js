@@ -6,6 +6,7 @@ const useTaskStore = create(
   persist(
     (set) => ({
       tasks: [],
+
       addTask: (task) =>
         set((state) => ({
           tasks: [
@@ -13,12 +14,21 @@ const useTaskStore = create(
             { ...task, isStarted: false, isCompleted: false },
           ],
         })),
-      deleteTask: (id) =>
+
+      handleDeleteTask: (id) =>
         set((state) => ({ tasks: state.tasks.filter((t) => t.id !== id) })),
+
       handleStartTask: (id) =>
         set((state) => ({
           tasks: state.tasks.map((task) =>
-            task.id === id ? { ...task, isStarted: !task.isStarted } : task
+            task.id === id ? { ...task, isStarted: true } : task
+          ),
+        })),
+
+      handleCompleteTask: (id) =>
+        set((state) => ({
+          tasks: state.tasks.map((task) =>
+            task.id === id ? { ...task, isCompleted: true } : task
           ),
         })),
     }),

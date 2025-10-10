@@ -5,6 +5,9 @@ import TaskItem from "./TaskItem";
 const TaskColumns = () => {
   const { tasks } = useTaskStore();
 
+  const todoTasks = tasks.filter(
+    (task) => !task.isStarted && !task.isCompleted
+  );
   const inProgressTasks = tasks.filter(
     (task) => task.isStarted && !task.isCompleted
   );
@@ -19,13 +22,13 @@ const TaskColumns = () => {
             <h3 className="text-xl font-bold flex items-center gap-2">
               <span>📋</span> To Do
               <span className="bg-indigo-600 text-white px-2 py-1 rounded-full text-xs">
-                {tasks.length}
+                {todoTasks.length}
               </span>
             </h3>
           </div>
 
-          {tasks.length > 0 ? (
-            tasks.map((task) => <TaskItem key={task.id} task={task} />)
+          {todoTasks.length > 0 ? (
+            todoTasks.map((task) => <TaskItem key={task.id} task={task} />)
           ) : (
             <EmptyTaskList />
           )}
@@ -37,7 +40,7 @@ const TaskColumns = () => {
             <h3 className="text-xl font-bold flex items-center gap-2">
               <span>🔄</span> In Progress
               <span className="bg-indigo-600 text-white px-2 py-1 rounded-full text-xs">
-                0
+                {inProgressTasks.length}
               </span>
             </h3>
           </div>
@@ -57,7 +60,7 @@ const TaskColumns = () => {
             <h3 className="text-xl font-bold flex items-center gap-2">
               <span>✅</span> Completed
               <span className="bg-indigo-600 text-white px-2 py-1 rounded-full text-xs">
-                0
+                {completedTasks.length}
               </span>
             </h3>
           </div>
