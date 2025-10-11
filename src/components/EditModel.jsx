@@ -144,7 +144,7 @@ const EditModel = () => {
           </button>
           <button
             onClick={handleSaveChanges}
-            className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all"
+            className="px-6 py-3 cursor-pointer bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all"
           >
             Save Changes
           </button>

@@ -6,8 +6,7 @@ import TaskForm from "./components/TaskForm";
 import useTaskStore from "./store/taskStore";
 
 export default function TaskManager() {
-  const { tasks, isEditModalOpen } = useTaskStore();
-  console.log(tasks);
+  const { isEditModalOpen } = useTaskStore();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-400 to-purple-500 p-5">

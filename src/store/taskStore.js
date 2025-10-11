@@ -6,7 +6,7 @@ const defaultData = [
     id: 1,
     title: "Task 1",
     description: "Description 1",
-    category: "Category 1",
+    category: "Category",
     priority: "High",
     status: "todo",
   },
@@ -14,7 +14,7 @@ const defaultData = [
     id: 2,
     title: "Task 2",
     description: "Description 2",
-    category: "Category 2",
+    category: "education",
     priority: "Medium",
     status: "inProgress",
   },
@@ -22,7 +22,7 @@ const defaultData = [
     id: 3,
     title: "Task 3",
     description: "Description 3",
-    category: "Category 3",
+    category: "work",
     priority: "Low",
     status: "completed",
   },
@@ -31,10 +31,13 @@ const defaultData = [
 // create store
 const useTaskStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       tasks: defaultData,
       selectedTask: null,
       isEditModalOpen: false,
+      searchTerm: "",
+      selectedPriority: "All",
+      selectedCategory: "All",
 
       addTask: (task) =>
         set((state) => ({
@@ -69,6 +72,37 @@ const useTaskStore = create(
             task.id === updatedTask.id ? updatedTask : task
           ),
         })),
+
+      setSearchTerm: (term) => set({ searchTerm: term }),
+      setSelectedPriority: (priority) => set({ selectedPriority: priority }),
+      setSelectedCategory: (category) => set({ selectedCategory: category }),
+
+      filteredTasks: () => {
+        const { tasks, searchTerm, selectedPriority, selectedCategory } = get();
+
+        return tasks.filter((task) => {
+          const matchesSearch =
+            task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            task.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+          const matchesPriority =
+            selectedPriority === "All" ||
+            task.priority.toLowerCase() === selectedPriority.toLowerCase();
+
+          const matchesCategory =
+            selectedCategory === "All" ||
+            task.category.toLowerCase() === selectedCategory.toLowerCase();
+
+          return matchesSearch && matchesPriority && matchesCategory;
+        });
+      },
+
+      clearFilters: () =>
+        set({
+          searchTerm: "",
+          selectedPriority: "All",
+          selectedCategory: "All",
+        }),
     }),
     {
       name: "task-storage", // 🔹 name of the key in localStorage

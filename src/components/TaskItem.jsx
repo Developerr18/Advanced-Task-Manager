@@ -9,7 +9,7 @@ const TaskItem = ({ task }) => {
   } = useTaskStore();
 
   return (
-    <div className="bg-white mb-4 rounded-lg p-5 shadow-md hover:shadow-lg transition-all border-l-4 border-yellow-500">
+    <div className="bg-white hover:-translate-y-1 mb-4 rounded-lg p-5 shadow-md hover:shadow-lg transition-all border-l-4 border-yellow-500">
       <div className="flex justify-between items-start mb-2">
         <div className="flex-1">
           <h4 className="text-lg font-semibold text-gray-800 mb-1">

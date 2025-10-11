@@ -3,7 +3,8 @@ import EmptyTaskList from "./EmptyTasklist";
 import TaskItem from "./TaskItem";
 
 const TaskColumns = () => {
-  const { tasks } = useTaskStore();
+  const { filteredTasks } = useTaskStore();
+  const tasks = filteredTasks();
 
   const todoTasks = tasks.filter((task) => task.status === "todo");
   const inProgressTasks = tasks.filter((task) => task.status === "inProgress");
