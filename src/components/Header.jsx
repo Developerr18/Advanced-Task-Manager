@@ -6,7 +6,7 @@ const Header = () => {
   const completedTasks = tasks.filter((task) => task.status === "completed");
 
   return (
-    <header className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-8 text-center">
+    <header className="bg-gradient-to-r bg-white/10 border border-white/20 from-slate-800 via-purple-800 to-slate-800 text-white p-8 text-center">
       <h1 className="text-2xl sm:text-4xl font-bold mb-2">
         Advanced Task Manager
       </h1>

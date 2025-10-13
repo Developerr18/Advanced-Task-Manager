@@ -1,0 +1,31 @@
+import Header from "./Header";
+import TaskForm from "./TaskForm";
+import TaskFilters from "./TaskFilters";
+import TaskColumns from "./TaskColumns";
+import EditModel from "./EditModel";
+import useTaskStore from "../store/taskStore";
+import { ToastContainer } from "react-toastify";
+
+export default function TaskManager() {
+  const { isEditModalOpen } = useTaskStore();
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-purple-900 to-slate-800 p-10">
+      <main
+        className={`max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${
+          isEditModalOpen ? "blur-sm" : ""
+        }`}
+      >
+        <Header />
+        <section className="p-8 border-b border-gray-200 space-y-6">
+          <TaskForm />
+          <TaskFilters />
+        </section>
+        <TaskColumns />
+      </main>
+
+      <EditModel />
+      <ToastContainer position="top-right" autoClose={2000} theme="colored" />
+    </div>
+  );
+}
