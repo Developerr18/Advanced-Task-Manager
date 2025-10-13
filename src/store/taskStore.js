@@ -4,27 +4,33 @@ import { persist } from "zustand/middleware";
 const defaultData = [
   {
     id: 1,
-    title: "Task 1",
+    title: "play with cat!",
     description: "Description 1",
-    category: "Category",
+    category: "personal",
     priority: "High",
     status: "todo",
+    createdAt: new Date(),
+    dueDate: "2025-10-15",
   },
   {
     id: 2,
-    title: "Task 2",
+    title: "workout",
     description: "Description 2",
-    category: "education",
+    category: "health",
     priority: "Medium",
     status: "inProgress",
+    createdAt: new Date(),
+    dueDate: "2025-10-17",
   },
   {
     id: 3,
-    title: "Task 3",
+    title: "read a book",
     description: "Description 3",
-    category: "work",
+    category: "education",
     priority: "Low",
     status: "completed",
+    createdAt: new Date(),
+    dueDate: "2025-10-19",
   },
 ];
 
@@ -41,7 +47,14 @@ const useTaskStore = create(
 
       addTask: (task) =>
         set((state) => ({
-          tasks: [...state.tasks, { ...task, status: "todo" }],
+          tasks: [
+            ...state.tasks,
+            {
+              ...task,
+              status: "todo",
+              createdAt: new Date(),
+            },
+          ],
         })),
 
       handleDeleteTask: (id) =>
@@ -83,12 +96,13 @@ const useTaskStore = create(
         return tasks.filter((task) => {
           const matchesSearch =
             task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            task.description.toLowerCase().includes(searchTerm.toLowerCase());
-
+            (task.description &&
+              task.description
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()));
           const matchesPriority =
             selectedPriority === "All" ||
             task.priority.toLowerCase() === selectedPriority.toLowerCase();
-
           const matchesCategory =
             selectedCategory === "All" ||
             task.category.toLowerCase() === selectedCategory.toLowerCase();

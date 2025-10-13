@@ -1,4 +1,5 @@
 import useTaskStore from "../store/taskStore";
+import { toast } from "react-toastify";
 
 const TaskItem = ({ task }) => {
   const {
@@ -51,7 +52,10 @@ const TaskItem = ({ task }) => {
           </button>
 
           <button
-            onClick={() => handleDeleteTask(task.id)}
+            onClick={() => {
+              handleDeleteTask(task.id);
+              toast.success("Task Deleted Successfully");
+            }}
             className="cursor-pointer px-3 py-1 text-xs bg-red-500 text-white rounded-md hover:bg-red-600 transition"
           >
             Delete
@@ -59,7 +63,10 @@ const TaskItem = ({ task }) => {
 
           {task.status !== "completed" && (
             <button
-              onClick={() => handleCompleteTask(task.id)}
+              onClick={() => {
+                handleCompleteTask(task.id);
+                toast.success("Task Completed Successfully");
+              }}
               className="cursor-pointer px-3 py-1 text-xs bg-green-500 text-white rounded-md hover:bg-green-600 transition"
             >
               Complete

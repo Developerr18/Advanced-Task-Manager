@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useTaskStore from "../store/taskStore";
+import { toast } from "react-toastify";
 
 const TaskForm = () => {
   const { addTask } = useTaskStore();
@@ -13,6 +14,7 @@ const TaskForm = () => {
   const handleSubmit = () => {
     if (!newTask.title) return;
     addTask({ ...newTask, id: Date.now() });
+    toast.success("Task Added Successfully");
     setNewTask({
       title: "",
       category: "education",
@@ -103,7 +105,7 @@ const TaskForm = () => {
       <button
         type="submit"
         onClick={handleSubmit}
-        className="cursor-pointer px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg hover:-translate-y-0.5 transition-all mb-5"
+        className="cursor-pointer w-50 px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all mb-5"
       >
         Add Task
       </button>
