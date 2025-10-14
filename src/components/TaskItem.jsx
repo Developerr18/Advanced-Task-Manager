@@ -1,5 +1,6 @@
 import useTaskStore from "../store/taskStore";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 const TaskItem = ({ task }) => {
   const {
@@ -8,6 +9,8 @@ const TaskItem = ({ task }) => {
     handleCompleteTask,
     openEditModal,
   } = useTaskStore();
+
+  const formattedDueDate = format(task.dueDate, "dd-MM-yyyy");
 
   return (
     <div className="bg-white hover:-translate-y-1 mb-4 rounded-lg p-5 shadow-md hover:shadow-lg transition-all border-l-4 border-yellow-500">
@@ -31,7 +34,7 @@ const TaskItem = ({ task }) => {
           <span className="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-700">
             {task.priority}
           </span>
-          <span className="text-xs text-gray-500">📅 12/31/2024</span>
+          <span className="text-xs text-gray-500">📅 {formattedDueDate}</span>
         </div>
 
         <div className="flex gap-2 flex-wrap">

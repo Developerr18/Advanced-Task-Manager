@@ -6,21 +6,21 @@ const TaskForm = () => {
   const { addTask } = useTaskStore();
   const [newTask, setNewTask] = useState({
     title: "",
-    category: "education",
-    priority: "medium",
+    category: "",
+    priority: "",
     description: "",
+    dueDate: "",
   });
 
   const handleSubmit = () => {
-    if (!newTask.title) return;
-    addTask({ ...newTask, id: Date.now() });
+    if (!newTask.title.trim()) return;
+    addTask(newTask);
     toast.success("Task Added Successfully");
     setNewTask({
       title: "",
-      category: "education",
-      priority: "medium",
+      category: "",
+      priority: "",
       description: "",
-      status: "todo",
     });
   };
 
@@ -82,7 +82,11 @@ const TaskForm = () => {
             Due Date
           </label>
           <input
-            type="datetime-local"
+            type="date"
+            value={newTask.dueDate}
+            onChange={(e) =>
+              setNewTask({ ...newTask, dueDate: e.target.value })
+            }
             className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors"
           />
         </div>

@@ -1,61 +1,31 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-const defaultData = [
-  {
-    id: 1,
-    title: "play with cat!",
-    description: "Description 1",
-    category: "personal",
-    priority: "High",
-    status: "todo",
-    createdAt: new Date(),
-    dueDate: "2025-10-15",
-  },
-  {
-    id: 2,
-    title: "workout",
-    description: "Description 2",
-    category: "health",
-    priority: "Medium",
-    status: "inProgress",
-    createdAt: new Date(),
-    dueDate: "2025-10-17",
-  },
-  {
-    id: 3,
-    title: "read a book",
-    description: "Description 3",
-    category: "education",
-    priority: "Low",
-    status: "completed",
-    createdAt: new Date(),
-    dueDate: "2025-10-19",
-  },
-];
-
 // create store
 const useTaskStore = create(
   persist(
     (set, get) => ({
-      tasks: defaultData,
+      tasks: [],
       selectedTask: null,
       isEditModalOpen: false,
       searchTerm: "",
       selectedPriority: "All",
       selectedCategory: "All",
 
-      addTask: (task) =>
-        set((state) => ({
-          tasks: [
-            ...state.tasks,
-            {
-              ...task,
-              status: "todo",
-              createdAt: new Date(),
-            },
-          ],
-        })),
+      addTask: (task) => {
+        const newTask = {
+          id: Date.now(),
+          title: task.title,
+          description: task.description || "No description",
+          category: task.category || "other",
+          priority: task.priority || "medium",
+          createdAt: new Date(),
+          dueDate: task.dueDate ? new Date(task.dueDate) : new Date(),
+          status: "todo",
+        };
+
+        set((state) => ({ tasks: [...state.tasks, newTask] }));
+      },
 
       handleDeleteTask: (id) =>
         set((state) => ({ tasks: state.tasks.filter((t) => t.id !== id) })),
@@ -100,9 +70,11 @@ const useTaskStore = create(
               task.description
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase()));
+
           const matchesPriority =
             selectedPriority === "All" ||
             task.priority.toLowerCase() === selectedPriority.toLowerCase();
+
           const matchesCategory =
             selectedCategory === "All" ||
             task.category.toLowerCase() === selectedCategory.toLowerCase();

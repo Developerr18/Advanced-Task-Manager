@@ -9,7 +9,7 @@ const AuthButton = ({ isLoggedIn, setIsLoggedIn }) => {
       onClick={() => {
         isLoggedIn ? setIsLoggedIn(false) : navigate("/");
       }}
-      className={`flex items-center cursor-pointer gap-2 absolute top-2 right-2 px-3 py-1 text-white rounded ${
+      className={`flex items-center cursor-pointer gap-2 absolute top-3 right-3 px-3 py-1 text-white rounded ${
         isLoggedIn
           ? "bg-red-500 hover:bg-red-600"
           : "bg-green-500 hover:bg-green-600"
