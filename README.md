@@ -1,16 +1,48 @@
-# React + Vite
+# My Task Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple task manager app built with **React**, **Vite**, and **Zustand** for state management. This app allows you to create, edit, delete, and manage tasks with different statuses like **To Do**, **In Progress**, and **Completed**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- Add new tasks with title, description, category, priority, due date, and time.
+- Edit and delete tasks.
+- Move tasks between **To Do**, **In Progress**, and **Completed** columns.
+- Tasks are saved in **local storage** using **Zustand persist**, so your data stays even after page reload.
+- Responsive layout for desktop and mobile screens.
+- Simple and clean UI with **Tailwind CSS**.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend:** React, Vite
+- **State Management:** Zustand (with persistence)
+- **Styling:** Tailwind CSS
+- **Icons:** Lucide React
+
+---
+
+## Installation
+
+1. **Clone the repository:**
+
+```bash
+git clone https://github.com/your-username/my-task-manager.git
+cd my-task-manager
+npm install
+npm run dev
+
+Project Structure
+my-task-manager/
+├─ public/             # Static assets
+├─ src/
+│  ├─ components/      # React components (TaskCard, Modal, Buttons, etc.)
+│  ├─ store/           # Zustand store
+│  ├─ App.jsx          # Main app component
+│  └─ main.jsx         # Entry point
+├─ package.json
+├─ tailwind.config.js
+└─ vite.config.js
+```

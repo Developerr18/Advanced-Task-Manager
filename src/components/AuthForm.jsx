@@ -1,12 +1,15 @@
 import { Mail, Lock, Eye, EyeOff, ArrowRight, User } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function AuthForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignIn, setIsSignIn] = useState(false);
 
+  const navigate = useNavigate();
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-10">
       <div className="w-full max-w-md">
         {/* Glassmorphism Card */}
         <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 space-y-8 transition-all duration-300">
@@ -188,7 +191,13 @@ export default function AuthForm() {
                 </span>
               </div>
             </div>
-            <button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white py-2 rounded-lg transition font-medium text-sm">
+            <button
+              onClick={() => {
+                navigate("/dashboard");
+                window.scrollTo(0, 0);
+              }}
+              className="w-full cursor-pointer bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white py-2 rounded-lg transition font-medium text-sm"
+            >
               Continue as Guest
             </button>
           </div>
