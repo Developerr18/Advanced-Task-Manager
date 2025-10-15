@@ -26,22 +26,21 @@ const TaskForm = () => {
 
   return (
     <>
-      <div className="flex gap-4 mb-5 flex-wrap">
+      <div className="flex mt-7 gap-4 mb-5 flex-wrap">
         <div className="flex-1 min-w-48">
-          <label className="block mb-1 font-semibold text-gray-700">
-            Task Title*
+          <label className="block text-md font-medium text-slate-200 mb-2">
+            Task Title
           </label>
           <input
             type="text"
             value={newTask.title}
             onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-            placeholder="Enter task title..."
-            className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors"
+            placeholder="Enter Task Title..."
+            className="w-full bg-white/5 border border-white/10 rounded-lg pl-4 pr-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
           />
         </div>
-
         <div className="flex-1 min-w-48">
-          <label className="block mb-1 font-semibold text-gray-700">
+          <label className="block text-md font-medium text-slate-200 mb-2">
             Category
           </label>
           <select
@@ -49,36 +48,53 @@ const TaskForm = () => {
               setNewTask({ ...newTask, category: e.target.value })
             }
             value={newTask.category}
-            className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-lg pl-4 pr-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
           >
-            <option value="work">Work</option>
-            <option value="personal">Personal</option>
-            <option value="shopping">Shopping</option>
-            <option value="health">Health</option>
-            <option value="education">Education</option>
-            <option value="other">Other</option>
+            <option className="text-black" value="work">
+              Work
+            </option>
+            <option className="text-black" value="personal">
+              Personal
+            </option>
+            <option className="text-black" value="shopping">
+              Shopping
+            </option>
+            <option className="text-black" value="health">
+              Health
+            </option>
+            <option className="text-black" value="education">
+              Education
+            </option>
+            <option className="text-black" value="other">
+              Other
+            </option>
           </select>
         </div>
 
         <div className="flex-1 min-w-48">
-          <label className="block mb-1 font-semibold text-gray-700">
+          <label className="block text-md font-medium text-slate-200 mb-2">
             Priority
           </label>
           <select
+            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
             value={newTask.priority}
             onChange={(e) =>
               setNewTask({ ...newTask, priority: e.target.value })
             }
-            className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors"
           >
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
+            <option className="text-black" value="low">
+              Low
+            </option>
+            <option className="text-black" value="medium">
+              Medium
+            </option>
+            <option className="text-black" value="high">
+              High
+            </option>
           </select>
         </div>
-
         <div className="flex-1 min-w-48">
-          <label className="block mb-1 font-semibold text-gray-700">
+          <label className="block text-md font-medium text-slate-200 mb-2">
             Due Date
           </label>
           <input
@@ -87,13 +103,13 @@ const TaskForm = () => {
             onChange={(e) =>
               setNewTask({ ...newTask, dueDate: e.target.value })
             }
-            className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
           />
         </div>
       </div>
 
       <div className="mb-5">
-        <label className="block mb-1 font-semibold text-gray-700">
+        <label className="block text-md font-medium text-slate-200 mb-2">
           Description
         </label>
         <textarea
@@ -102,14 +118,14 @@ const TaskForm = () => {
             setNewTask({ ...newTask, description: e.target.value })
           }
           placeholder="Task description (optional)..."
-          className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none text-base resize-y min-h-20 transition-colors"
+          className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
         />
       </div>
 
       <button
         type="submit"
         onClick={handleSubmit}
-        className="cursor-pointer text-lg w-50 px-6 py-3 bg-gradient-to-r from-purple-700 via-slate-700 to-purple-700 text-white rounded-lg font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all mb-5"
+        className="w-full max-w-40 cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 mt-6"
       >
         Add Task
       </button>

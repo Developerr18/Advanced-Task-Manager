@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Header from "./Header";
 import TaskForm from "./TaskForm";
 import TaskFilters from "./TaskFilters";
@@ -5,8 +6,6 @@ import TaskColumns from "./TaskColumns";
 import EditModel from "./EditModel";
 import useTaskStore from "../store/taskStore";
 import { ToastContainer } from "react-toastify";
-
-import { useState } from "react";
 import AuthButton from "./AuthButton";
 
 export default function TaskManager() {
@@ -14,15 +13,18 @@ export default function TaskManager() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-purple-900 to-slate-800 p-13">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-13">
       <AuthButton isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <main
-        className={`max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${
+        className={`max-w-7xl mx-auto bg-white/10 border border-white/20 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 ${
           isEditModalOpen ? "blur-sm" : ""
         }`}
       >
         <Header />
-        <section className="p-8 border-b border-gray-200 space-y-6">
+        <div className="inset-0 flex items-center">
+          <div className="w-full border-t border-white/20"></div>
+        </div>
+        <section className="p-8 space-y-6">
           <TaskForm />
           <TaskFilters />
         </section>
