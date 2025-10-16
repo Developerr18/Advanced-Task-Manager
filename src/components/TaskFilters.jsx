@@ -9,30 +9,34 @@ const TaskFilters = () => {
     selectedCategory,
     setSelectedCategory,
     clearFilters,
+    sortBy,
+    setSortBy,
   } = useTaskStore();
 
+  console.log(sortBy);
+
   return (
-    <div className="flex gap-7 mt-15 items-center flex-wrap">
+    <div className="flex gap-4 mt-15 justify-between flex-wrap">
       <div className="flex items-center gap-2">
-        <label className="text-md font-medium text-slate-200 mb-2">
+        <label className="text-md font-medium text-slate-200 mb-2 min-w-20 sm:min-w-14">
           Search:
         </label>
         <input
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search tasks..."
-          className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
+          placeholder="Search Tasks..."
+          className="w-full bg-white/5 border border-white/10 rounded-lg px-1 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
         />
       </div>
       <div className="flex items-center gap-2">
-        <label className="text-md font-medium text-slate-200 mb-2">
+        <label className="text-md font-medium text-slate-200 mb-2 min-w-20 sm:min-w-18">
           Category:
         </label>
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
+          className="w-full bg-white/5 border border-white/10 rounded-lg px-1 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
         >
           <option className="text-black" value="All">
             All Categories
@@ -58,13 +62,13 @@ const TaskFilters = () => {
         </select>
       </div>
       <div className="flex items-center gap-2">
-        <label className="font-medium text-md text-slate-200 mb-2">
+        <label className="font-medium text-md text-slate-200 mb-2 min-w-20 sm:min-w-15">
           Priority:
         </label>
         <select
           value={selectedPriority}
           onChange={(e) => setSelectedPriority(e.target.value)}
-          className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
+          className="w-full bg-white/5 border border-white/10 rounded-lg px-1 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
         >
           <option className="text-black" value="All">
             All Priorities
@@ -81,10 +85,14 @@ const TaskFilters = () => {
         </select>
       </div>
       <div className="flex items-center gap-2">
-        <label className="font-medium text-md text-slate-200 mb-2">
+        <label className="font-medium text-md text-slate-200 mb-2 min-w-20 sm:min-w-15">
           Sort by:
         </label>
-        <select className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition">
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="w-full bg-white/5 border border-white/10 rounded-lg px-1 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
+        >
           <option className="text-black" value="created">
             Date Created
           </option>

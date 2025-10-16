@@ -11,6 +11,7 @@ const EditModel = () => {
     priority: "",
     description: "",
     status: "",
+    dueDate: "",
   });
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const EditModel = () => {
         priority: selectedTask.priority,
         description: selectedTask.description,
         status: selectedTask.status,
+        dueDate: selectedTask.dueDate,
       });
     }
   }, [selectedTask]);
@@ -115,7 +117,11 @@ const EditModel = () => {
             Due Date
           </label>
           <input
-            type="datetime-local"
+            type="date"
+            value={formData.dueDate}
+            onChange={(e) =>
+              setFormData({ ...formData, dueDate: e.target.value })
+            }
             className="w-full px-3 py-3 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors"
           />
         </div>

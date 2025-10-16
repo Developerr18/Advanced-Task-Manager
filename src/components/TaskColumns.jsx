@@ -32,7 +32,7 @@ const TaskColumns = () => {
         </div>
 
         {/* In Progress Column */}
-        <div className="bg-gray-50 rounded-xl p-5 min-h-96">
+        <div className="bg-gray-50 rounded-xl p-5">
           <div className="flex items-center justify-between mb-5 pb-3 border-b-2 border-gray-300">
             <h3 className="text-xl font-bold flex items-center gap-2">
               <span>🔄</span> In Progress
@@ -52,7 +52,7 @@ const TaskColumns = () => {
         </div>
 
         {/* Completed Column */}
-        <div className="bg-gray-50 rounded-xl p-5 min-h-96">
+        <div className="bg-gray-50 rounded-xl p-5">
           <div className="flex items-center justify-between mb-5 pb-3 border-b-2 border-gray-300">
             <h3 className="text-xl font-bold flex items-center gap-2">
               <span>✅</span> Completed

@@ -10,7 +10,7 @@ const TaskItem = ({ task }) => {
     openEditModal,
   } = useTaskStore();
 
-  const formattedDueDate = format(task.dueDate, "dd-MM-yyyy");
+  const formattedDueDate = task.dueDate && format(task.dueDate, "dd-MM-yyyy");
 
   return (
     <div className="bg-white hover:-translate-y-1 mb-4 rounded-lg p-5 shadow-md hover:shadow-lg transition-all border-l-4 border-yellow-500">

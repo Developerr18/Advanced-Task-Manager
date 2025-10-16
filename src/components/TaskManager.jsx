@@ -24,7 +24,7 @@ export default function TaskManager() {
         <div className="inset-0 flex items-center">
           <div className="w-full border-t border-white/20"></div>
         </div>
-        <section className="p-8 space-y-6">
+        <section className="p-10 space-y-6">
           <TaskForm />
           <TaskFilters />
         </section>

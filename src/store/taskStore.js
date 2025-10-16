@@ -11,6 +11,7 @@ const useTaskStore = create(
       searchTerm: "",
       selectedPriority: "All",
       selectedCategory: "All",
+      sortBy: "",
 
       addTask: (task) => {
         const newTask = {
@@ -20,7 +21,7 @@ const useTaskStore = create(
           category: task.category || "other",
           priority: task.priority || "medium",
           createdAt: new Date(),
-          dueDate: task.dueDate ? new Date(task.dueDate) : new Date(),
+          dueDate: task.dueDate ? new Date(task.dueDate) : null,
           status: "todo",
         };
 
@@ -59,28 +60,48 @@ const useTaskStore = create(
       setSearchTerm: (term) => set({ searchTerm: term }),
       setSelectedPriority: (priority) => set({ selectedPriority: priority }),
       setSelectedCategory: (category) => set({ selectedCategory: category }),
+      setSortBy: (sortBy) => set({ sortBy }),
 
       filteredTasks: () => {
-        const { tasks, searchTerm, selectedPriority, selectedCategory } = get();
+        const {
+          tasks,
+          searchTerm,
+          selectedPriority,
+          selectedCategory,
+          sortBy,
+        } = get();
 
-        return tasks.filter((task) => {
-          const matchesSearch =
-            task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (task.description &&
-              task.description
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase()));
+        return tasks
+          .filter((task) => {
+            const matchesSearch = task.title
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase());
 
-          const matchesPriority =
-            selectedPriority === "All" ||
-            task.priority.toLowerCase() === selectedPriority.toLowerCase();
+            const matchesPriority =
+              selectedPriority === "All" ||
+              task.priority.toLowerCase() === selectedPriority.toLowerCase();
 
-          const matchesCategory =
-            selectedCategory === "All" ||
-            task.category.toLowerCase() === selectedCategory.toLowerCase();
+            const matchesCategory =
+              selectedCategory === "All" ||
+              task.category.toLowerCase() === selectedCategory.toLowerCase();
 
-          return matchesSearch && matchesPriority && matchesCategory;
-        });
+            return matchesSearch && matchesPriority && matchesCategory;
+          })
+          .sort((a, b) => {
+            if (sortBy === "title") return a.title.localeCompare(b.title);
+            if (sortBy === "priority") {
+              const order = { high: 1, medium: 2, low: 3 };
+              return (
+                order[a.priority.toLowerCase()] -
+                order[b.priority.toLowerCase()]
+              );
+            }
+            if (sortBy === "dueDate")
+              return new Date(a.dueDate) - new Date(b.dueDate);
+            if (sortBy === "created")
+              return new Date(a.createdAt) - new Date(b.createdAt);
+            return 0;
+          });
       },
 
       clearFilters: () =>
