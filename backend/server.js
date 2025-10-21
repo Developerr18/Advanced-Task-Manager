@@ -1,27 +1,20 @@
 import express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
+import connectDB from "./src/config/db.js";
+import authRoutes from "./src/routes/authRoute.js";
+import taskRoutes from "./src/routes/taskRoute.js";
 
 dotenv.config();
-
 const app = express();
-const port = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use(cors());
+app.use(express.json());
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-  connectDB();
-});
+connectDB();
 
-async function connectDB() {
-  try {
-    const connection = await mongoose.connect(process.env.MONGODB_URI);
-    console.log(`MongoDB connected: ${connection.connection.host}`);
-  } catch (err) {
-    console.log(err);
-    process.exit(1);
-  }
-}
+app.use("/api/auth", authRoutes);
+app.use("/api/tasks", taskRoutes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
