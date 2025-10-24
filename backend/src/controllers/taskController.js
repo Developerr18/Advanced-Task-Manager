@@ -65,6 +65,46 @@ export const getTasks = async (req, res) => {
   }
 };
 
-export const updateTask = async (req, res) => {};
+// update task
+export const updateTask = async (req, res) => {
+  const { id } = req.params;
 
-export const deleteTask = async (req, res) => {};
+  try {
+    const updatedTask = await TaskModel.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).json({
+      success: true,
+      message: "Task updated successfully!",
+      data: updatedTask,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error occured during task updating!",
+      error: err.message,
+    });
+  }
+};
+
+// delete task
+export const deleteTask = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedTask = await TaskModel.findByIdAndDelete(id);
+    res.status(200).json({
+      success: true,
+      message: "Task deleted successfully!",
+      data: deletedTask,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error occured during task deletion!",
+      error: err.message,
+    });
+  }
+};
