@@ -344,7 +344,7 @@ export default function AuthForm() {
             <button
               type="submit"
               onClick={handleSubmit}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 mt-6"
+              className="w-full cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 mt-6"
             >
               {isSignIn ? "Sign In" : "Create Account"}
               <ArrowRight className="w-5 h-5" />
@@ -385,7 +385,7 @@ export default function AuthForm() {
                   setErrors({});
                   setServerError("");
                 }}
-                className="text-blue-400 hover:text-blue-300 font-semibold transition"
+                className="text-blue-400 cursor-pointer hover:text-blue-300 font-semibold transition"
               >
                 {isSignIn ? "Sign up" : "Sign in"}
               </button>
