@@ -1,9 +1,17 @@
-import { Mail, Lock, Eye, EyeOff, ArrowRight, User } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  User,
+  X,
+  AlertCircle,
+} from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import useTaskStore from "../store/taskStore";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 export default function AuthForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,6 +24,8 @@ export default function AuthForm() {
     confirmPassword: "",
     agree: false,
   });
+  const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState("");
 
   const navigate = useNavigate();
 
@@ -25,18 +35,51 @@ export default function AuthForm() {
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
     }));
+
+    // Clear error for this field when user types
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!isSignIn && !formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    if (!isSignIn) {
+      if (!formData.confirmPassword) {
+        newErrors.confirmPassword = "Please confirm your password";
+      } else if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = "Passwords do not match";
+      }
+
+      if (!formData.agree) {
+        newErrors.agree = "You must agree to the terms and conditions";
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
-    if (!isSignIn) {
-      if (!formData.agree) {
-        toast.error("Please agree to the terms and conditions!");
-        return;
-      }
-      if (formData.password !== formData.confirmPassword) {
-        toast.error("Passwords do not match!");
-        return;
-      }
+    if (!validateForm()) {
+      return;
     }
 
     try {
@@ -49,7 +92,6 @@ export default function AuthForm() {
             confirmPassword: formData.password,
           };
 
-      // send a post req to the backend
       const res = await axios.post(
         `${backendURL}/api/auth/${isSignIn ? "login" : "register"}`,
         payload
@@ -61,12 +103,35 @@ export default function AuthForm() {
       }
     } catch (error) {
       console.error(error);
-      toast.error(error.response.data.message);
+      const errorMessage =
+        error.response?.data?.message ||
+        "Something went wrong. Please try again.";
+      setServerError(errorMessage);
+
+      setTimeout(() => {
+        setServerError("");
+      }, 5000);
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-10">
+      {/* Toast-like Server Error */}
+      {serverError && (
+        <div className="fixed top-4 right-4 z-50 animate-in slide-in-from-top-2 duration-300">
+          <div className="bg-red-500/90 backdrop-blur-lg text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 max-w-md">
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+            <p className="text-sm font-medium flex-1">{serverError}</p>
+            <button
+              onClick={() => setServerError("")}
+              className="text-white/80 hover:text-white transition"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="w-full max-w-md">
         {/* Card */}
         <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 space-y-8 transition-all duration-300">
@@ -105,9 +170,17 @@ export default function AuthForm() {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="John Doe"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
+                    className={`w-full bg-white/5 border ${
+                      errors.name ? "border-red-400" : "border-white/10"
+                    } rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition`}
                   />
                 </div>
+                {errors.name && (
+                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" />
+                    {errors.name}
+                  </p>
+                )}
               </div>
             )}
 
@@ -124,9 +197,17 @@ export default function AuthForm() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="you@example.com"
-                  className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
+                  className={`w-full bg-white/5 border ${
+                    errors.email ? "border-red-400" : "border-white/10"
+                  } rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition`}
                 />
               </div>
+              {errors.email && (
+                <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  {errors.email}
+                </p>
+              )}
             </div>
 
             {/* Password Input */}
@@ -142,7 +223,9 @@ export default function AuthForm() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-10 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
+                  className={`w-full bg-white/5 border ${
+                    errors.password ? "border-red-400" : "border-white/10"
+                  } rounded-lg pl-10 pr-10 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition`}
                 />
                 <button
                   type="button"
@@ -156,6 +239,12 @@ export default function AuthForm() {
                   )}
                 </button>
               </div>
+              {errors.password && (
+                <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  {errors.password}
+                </p>
+              )}
             </div>
 
             {/* Confirm Password - Sign Up Only */}
@@ -172,9 +261,39 @@ export default function AuthForm() {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     placeholder="••••••••"
-                    className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
+                    className={`w-full bg-white/5 border ${
+                      errors.confirmPassword
+                        ? "border-red-400"
+                        : "border-white/10"
+                    } rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition`}
                   />
                 </div>
+                {errors.confirmPassword && (
+                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" />
+                    {errors.confirmPassword}
+                  </p>
+                )}
+                {!errors.confirmPassword &&
+                  formData.confirmPassword &&
+                  formData.password === formData.confirmPassword && (
+                    <p className="text-green-400 text-xs mt-1 flex items-center gap-1">
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      Passwords match
+                    </p>
+                  )}
               </div>
             )}
 
@@ -199,16 +318,26 @@ export default function AuthForm() {
 
             {/* Terms - Sign Up Only */}
             {!isSignIn && (
-              <label className="flex items-start text-slate-300 hover:text-white cursor-pointer transition text-sm">
-                <input
-                  type="checkbox"
-                  name="agree"
-                  checked={formData.agree}
-                  onChange={handleChange}
-                  className="w-4 h-4 rounded border-white/20 bg-white/5 mr-2 mt-0.5"
-                />
-                I agree to the Terms of Service and Privacy Policy
-              </label>
+              <div>
+                <label className="flex items-start text-slate-300 hover:text-white cursor-pointer transition text-sm">
+                  <input
+                    type="checkbox"
+                    name="agree"
+                    checked={formData.agree}
+                    onChange={handleChange}
+                    className={`w-4 h-4 rounded border-white/20 bg-white/5 mr-2 mt-0.5 ${
+                      errors.agree ? "border-red-400" : ""
+                    }`}
+                  />
+                  I agree to the Terms of Service and Privacy Policy
+                </label>
+                {errors.agree && (
+                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1 ml-6">
+                    <AlertCircle className="w-3 h-3" />
+                    {errors.agree}
+                  </p>
+                )}
+              </div>
             )}
 
             {/* Submit Button */}
@@ -251,7 +380,11 @@ export default function AuthForm() {
                 ? "Don't have an account? "
                 : "Already have an account? "}
               <button
-                onClick={() => setIsSignIn(!isSignIn)}
+                onClick={() => {
+                  setIsSignIn(!isSignIn);
+                  setErrors({});
+                  setServerError("");
+                }}
                 className="text-blue-400 hover:text-blue-300 font-semibold transition"
               >
                 {isSignIn ? "Sign up" : "Sign in"}
