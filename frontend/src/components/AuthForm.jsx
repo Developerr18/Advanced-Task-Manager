@@ -1,17 +1,74 @@
 import { Mail, Lock, Eye, EyeOff, ArrowRight, User } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import useTaskStore from "../store/taskStore";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function AuthForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignIn, setIsSignIn] = useState(false);
+  const { backendURL, setToken } = useTaskStore();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    agree: false,
+  });
 
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value, checked, type } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    if (!isSignIn) {
+      if (!formData.agree) {
+        toast.error("Please agree to the terms and conditions!");
+        return;
+      }
+      if (formData.password !== formData.confirmPassword) {
+        toast.error("Passwords do not match!");
+        return;
+      }
+    }
+
+    try {
+      const payload = isSignIn
+        ? { email: formData.email, password: formData.password }
+        : {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            confirmPassword: formData.password,
+          };
+
+      // send a post req to the backend
+      const res = await axios.post(
+        `${backendURL}/api/auth/${isSignIn ? "login" : "register"}`,
+        payload
+      );
+
+      if (res.data.success) {
+        setToken(res.data.token);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response.data.message);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-10">
       <div className="w-full max-w-md">
-        {/* Glassmorphism Card */}
+        {/* Card */}
         <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 space-y-8 transition-all duration-300">
           {/* Header */}
           <div className="space-y-2 text-center">
@@ -44,6 +101,9 @@ export default function AuthForm() {
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <input
                     type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     placeholder="John Doe"
                     className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
                   />
@@ -60,6 +120,9 @@ export default function AuthForm() {
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="you@example.com"
                   className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
                 />
@@ -75,6 +138,9 @@ export default function AuthForm() {
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                 <input
                   type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                   placeholder="••••••••"
                   className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-10 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
                 />
@@ -102,6 +168,9 @@ export default function AuthForm() {
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                   <input
                     type="password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
                     placeholder="••••••••"
                     className="w-full bg-white/5 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition"
                   />
@@ -133,6 +202,9 @@ export default function AuthForm() {
               <label className="flex items-start text-slate-300 hover:text-white cursor-pointer transition text-sm">
                 <input
                   type="checkbox"
+                  name="agree"
+                  checked={formData.agree}
+                  onChange={handleChange}
                   className="w-4 h-4 rounded border-white/20 bg-white/5 mr-2 mt-0.5"
                 />
                 I agree to the Terms of Service and Privacy Policy
@@ -140,7 +212,11 @@ export default function AuthForm() {
             )}
 
             {/* Submit Button */}
-            <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 mt-6">
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 rounded-lg transition transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 mt-6"
+            >
               {isSignIn ? "Sign In" : "Create Account"}
               <ArrowRight className="w-5 h-5" />
             </button>

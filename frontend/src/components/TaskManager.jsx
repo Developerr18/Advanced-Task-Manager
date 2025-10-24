@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Header from "./Header";
 import TaskForm from "./TaskForm";
 import TaskFilters from "./TaskFilters";
@@ -10,11 +9,10 @@ import AuthButton from "./AuthButton";
 
 export default function TaskManager() {
   const { isEditModalOpen } = useTaskStore();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-13">
-      <AuthButton isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <AuthButton />
       <main
         className={`max-w-7xl mx-auto bg-white/10 border border-white/20 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 ${
           isEditModalOpen ? "blur-sm" : ""

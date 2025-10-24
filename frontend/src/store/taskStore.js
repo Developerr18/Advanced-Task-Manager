@@ -5,13 +5,18 @@ import { persist } from "zustand/middleware";
 const useTaskStore = create(
   persist(
     (set, get) => ({
+      backendURL: import.meta.env.VITE_BACKEND_URL,
       tasks: [],
+      token: null,
       selectedTask: null,
       isEditModalOpen: false,
       searchTerm: "",
       selectedPriority: "All",
       selectedCategory: "All",
       sortBy: "",
+
+      setToken: (token) => set({ token }),
+      clearToken: () => set({ token: null }),
 
       addTask: (task) => {
         const newTask = {

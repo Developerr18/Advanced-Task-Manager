@@ -1,22 +1,24 @@
 import { useNavigate } from "react-router";
 import { LogIn, LogOut } from "lucide-react";
+import useTaskStore from "../store/taskStore";
 
-const AuthButton = ({ isLoggedIn, setIsLoggedIn }) => {
+const AuthButton = () => {
+  const { token, clearToken } = useTaskStore();
   const navigate = useNavigate();
 
   return (
     <button
       onClick={() => {
-        isLoggedIn ? setIsLoggedIn(false) : navigate("/");
+        token ? clearToken() : navigate("/");
       }}
       className={`flex items-center cursor-pointer gap-2 absolute top-3 right-3 px-3 py-1 text-white rounded ${
-        isLoggedIn
+        token
           ? "bg-red-500 hover:bg-red-600"
           : "bg-green-500 hover:bg-green-600"
       } transition`}
     >
-      {isLoggedIn ? <LogIn /> : <LogOut />}
-      {isLoggedIn ? "Log Out" : "Log In"}
+      {token ? <LogIn /> : <LogOut />}
+      {token ? "Log Out" : "Log In"}
     </button>
   );
 };

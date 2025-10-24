@@ -5,11 +5,16 @@ import jsonwebtoken from "jsonwebtoken";
 // register user
 export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
     if (!name || !email || !password) {
       return res
         .status(400)
         .json({ success: false, message: "All fields are required!" });
+    }
+    if (password !== confirmPassword) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Passwords do not match" });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -111,4 +116,18 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = async (req, res) => {};
+// logout user
+export const logout = async (req, res) => {
+  try {
+    res
+      .status(200)
+      .json({ success: true, message: "User logged out successfully!" });
+  } catch (err) {
+    console.error("Logout error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error occured during logout!",
+      error: err.message,
+    });
+  }
+};
