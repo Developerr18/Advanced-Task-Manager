@@ -1,6 +1,5 @@
 import { useState } from "react";
 import useTaskStore from "../store/taskStore";
-import { toast } from "react-toastify";
 
 const TaskForm = () => {
   const { addTask } = useTaskStore();
@@ -15,7 +14,6 @@ const TaskForm = () => {
   const handleSubmit = () => {
     if (!newTask.title.trim()) return;
     addTask(newTask);
-    toast.success("Task Added Successfully");
     setNewTask({
       title: "",
       category: "",

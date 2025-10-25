@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 // create store
 const useTaskStore = create(
@@ -18,9 +20,11 @@ const useTaskStore = create(
       setToken: (token) => set({ token }),
       clearToken: () => set({ token: null }),
 
-      addTask: (task) => {
+      // add task
+      addTask: async (task) => {
+        const { token, backendURL } = get();
+
         const newTask = {
-          id: Date.now(),
           title: task.title,
           description: task.description || "No description",
           category: task.category || "other",
@@ -30,16 +34,55 @@ const useTaskStore = create(
           status: "todo",
         };
 
-        set((state) => ({ tasks: [...state.tasks, newTask] }));
+        if (token) {
+          try {
+            const res = await axios.post(
+              `${backendURL}/api/tasks/create`,
+              newTask,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+
+            if (res.data.success) {
+              set((state) => ({ tasks: [...state.tasks, res.data.data] }));
+              console.log(res.data);
+              toast.success(res.data.message);
+            }
+          } catch (err) {
+            console.error(err);
+            toast.error(err.response.data.message);
+          }
+        }
       },
 
-      handleDeleteTask: (id) =>
-        set((state) => ({ tasks: state.tasks.filter((t) => t.id !== id) })),
+      // delete task
+      handleDeleteTask: async (id) => {
+        const { token, backendURL } = get();
+        set((state) => ({ tasks: state.tasks.filter((t) => t._id !== id) }));
+
+        if (token) {
+          try {
+            const res = await axios.delete(
+              `${backendURL}/api/tasks/delete/${id}`
+            );
+            if (res.data.success) {
+              console.log(res.data);
+              toast.success(res.data.message);
+            }
+          } catch (err) {
+            console.error(err);
+            toast.error(err.response.data.message);
+          }
+        }
+      },
 
       handleStartTask: (id) =>
         set((state) => ({
           tasks: state.tasks.map((task) =>
-            task.id === id ? { ...task, status: "inProgress" } : task
+            task._id === id ? { ...task, status: "inProgress" } : task
           ),
         })),
 

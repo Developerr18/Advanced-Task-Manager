@@ -1,5 +1,4 @@
 import useTaskStore from "../store/taskStore";
-import { toast } from "react-toastify";
 import { format } from "date-fns";
 
 const TaskItem = ({ task }) => {
@@ -40,7 +39,7 @@ const TaskItem = ({ task }) => {
         <div className="flex gap-2 flex-wrap">
           {task.status === "todo" && (
             <button
-              onClick={() => handleStartTask(task.id)}
+              onClick={() => handleStartTask(task._id)}
               className="cursor-pointer px-3 py-1 text-xs bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
             >
               Start
@@ -56,8 +55,7 @@ const TaskItem = ({ task }) => {
 
           <button
             onClick={() => {
-              handleDeleteTask(task.id);
-              toast.success("Task Deleted Successfully");
+              handleDeleteTask(task._id);
             }}
             className="cursor-pointer px-3 py-1 text-xs bg-red-500 text-white rounded-md hover:bg-red-600 transition"
           >
@@ -67,8 +65,7 @@ const TaskItem = ({ task }) => {
           {task.status !== "completed" && (
             <button
               onClick={() => {
-                handleCompleteTask(task.id);
-                toast.success("Task Completed Successfully");
+                handleCompleteTask(task._id);
               }}
               className="cursor-pointer px-3 py-1 text-xs bg-green-500 text-white rounded-md hover:bg-green-600 transition"
             >
