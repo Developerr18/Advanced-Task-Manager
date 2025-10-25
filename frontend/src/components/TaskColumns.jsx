@@ -1,14 +1,19 @@
+import { useEffect } from "react";
 import useTaskStore from "../store/taskStore";
 import EmptyTaskList from "./EmptyTasklist";
 import TaskItem from "./TaskItem";
 
 const TaskColumns = () => {
-  const { filteredTasks } = useTaskStore();
+  const { filteredTasks, fetchTasks } = useTaskStore();
   const tasks = filteredTasks();
 
   const todoTasks = tasks.filter((task) => task.status === "todo");
   const inProgressTasks = tasks.filter((task) => task.status === "inProgress");
   const completedTasks = tasks.filter((task) => task.status === "completed");
+
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
 
   return (
     <div className="p-8">
@@ -44,7 +49,7 @@ const TaskColumns = () => {
 
           {inProgressTasks.length > 0 ? (
             inProgressTasks.map((task) => (
-              <TaskItem key={task.id} task={task} />
+              <TaskItem key={task._id} task={task} />
             ))
           ) : (
             <EmptyTaskList />

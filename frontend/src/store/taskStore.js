@@ -3,22 +3,59 @@ import { persist } from "zustand/middleware";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const initialState = {
+  backendURL: import.meta.env.VITE_BACKEND_URL,
+  tasks: [],
+  token: null,
+  selectedTask: null,
+  isEditModelOpen: false,
+  searchTerm: "",
+  selectedPriority: "All",
+  selectedCategory: "All",
+  sortBy: "",
+};
+
 // create store
 const useTaskStore = create(
   persist(
     (set, get) => ({
-      backendURL: import.meta.env.VITE_BACKEND_URL,
-      tasks: [],
-      token: null,
-      selectedTask: null,
-      isEditModalOpen: false,
-      searchTerm: "",
-      selectedPriority: "All",
-      selectedCategory: "All",
-      sortBy: "",
+      ...initialState,
 
       setToken: (token) => set({ token }),
-      clearToken: () => set({ token: null }),
+
+      // get tasks
+      fetchTasks: async () => {
+        const { token, backendURL } = get();
+        if (token) {
+          try {
+            const res = await axios.get(`${backendURL}/api/tasks/get`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            if (res.data?.data?.length === 0) {
+              toast.error(res.data.message);
+            }
+            if (res.data.success) {
+              set({ tasks: res.data.data });
+            }
+          } catch (err) {
+            console.error(err);
+            toast.error(err.response.data.message);
+          }
+        }
+      },
+
+      // handle logout
+      handleLogout: (navigate) => {
+        const { token } = get();
+        if (token) {
+          set({ ...initialState });
+          localStorage.removeItem("task-storage");
+        } else {
+          navigate("/");
+        }
+      },
 
       // add task
       addTask: async (task) => {
@@ -79,12 +116,34 @@ const useTaskStore = create(
         }
       },
 
-      handleStartTask: (id) =>
+      // update task
+      handleStartTask: async (id) => {
+        const { token, backendURL } = get();
+
         set((state) => ({
           tasks: state.tasks.map((task) =>
             task._id === id ? { ...task, status: "inProgress" } : task
           ),
-        })),
+        }));
+
+        if (token) {
+          try {
+            const res = await axios.put(
+              `${backendURL}/api/tasks/update/${id}`,
+              {
+                status: "inProgress",
+              }
+            );
+            if (res.data.success) {
+              console.log(res.data);
+              toast.success(res.data.message);
+            }
+          } catch (err) {
+            console.error(err);
+            toast.error(err.response.data.message);
+          }
+        }
+      },
 
       handleCompleteTask: (id) =>
         set((state) => ({
@@ -98,12 +157,31 @@ const useTaskStore = create(
 
       closeEditModal: () => set({ selectedTask: null, isEditModalOpen: false }),
 
-      updateTask: (updatedTask) =>
+      updateTask: async (updatedTask) => {
+        const { backendURL, token } = get();
+
         set((state) => ({
           tasks: state.tasks.map((task) =>
-            task.id === updatedTask.id ? updatedTask : task
+            task._id === updatedTask._id ? updatedTask : task
           ),
-        })),
+        }));
+
+        if (token) {
+          try {
+            const res = await axios.put(
+              `${backendURL}/api/tasks/update/${updatedTask._id}`,
+              updatedTask
+            );
+            if (res.data.success) {
+              console.log(res.data);
+              toast.success(res.data.message);
+            }
+          } catch (err) {
+            console.error(err);
+            toast.error(err.response.data.message);
+          }
+        }
+      },
 
       setSearchTerm: (term) => set({ searchTerm: term }),
       setSelectedPriority: (priority) => set({ selectedPriority: priority }),

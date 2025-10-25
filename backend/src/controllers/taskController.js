@@ -46,8 +46,8 @@ export const getTasks = async (req, res) => {
 
     if (tasks.length === 0) {
       return res
-        .status(404)
-        .json({ success: false, message: "No tasks found!" });
+        .status(200)
+        .json({ success: false, message: "No tasks found!", data: [] });
     }
 
     res.status(200).json({
