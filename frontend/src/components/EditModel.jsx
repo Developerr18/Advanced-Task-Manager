@@ -14,6 +14,7 @@ const EditModel = () => {
     dueDate: "",
   });
 
+  // update form data when selected task changes
   useEffect(() => {
     if (selectedTask) {
       setFormData({
@@ -22,7 +23,7 @@ const EditModel = () => {
         priority: selectedTask.priority,
         description: selectedTask.description,
         status: selectedTask.status,
-        dueDate: selectedTask.dueDate,
+        dueDate: selectedTask.dueDate ? selectedTask.dueDate : "",
       });
     }
   }, [selectedTask]);
@@ -48,6 +49,7 @@ const EditModel = () => {
           </span>
         </div>
 
+        {/* title */}
         <div className="mb-4">
           <label className="block mb-1 font-semibold text-gray-700">
             Title*
@@ -62,6 +64,7 @@ const EditModel = () => {
           />
         </div>
 
+        {/* description */}
         <div className="mb-4">
           <label className="block mb-1 font-semibold text-gray-700">
             Description
@@ -75,6 +78,7 @@ const EditModel = () => {
           />
         </div>
 
+        {/* category */}
         <div className="mb-4">
           <label className="block mb-1 font-semibold text-gray-700">
             Category
@@ -95,6 +99,7 @@ const EditModel = () => {
           </select>
         </div>
 
+        {/* priority */}
         <div className="mb-4">
           <label className="block mb-1 font-semibold text-gray-700">
             Priority
@@ -112,13 +117,14 @@ const EditModel = () => {
           </select>
         </div>
 
+        {/* due date */}
         <div className="mb-4">
           <label className="block mb-1 font-semibold text-gray-700">
             Due Date
           </label>
           <input
             type="date"
-            value={formData.dueDate}
+            value={formData.dueDate ? formData.dueDate.split("T")[0] : ""}
             onChange={(e) =>
               setFormData({ ...formData, dueDate: e.target.value })
             }
@@ -126,6 +132,7 @@ const EditModel = () => {
           />
         </div>
 
+        {/* status */}
         <div className="mb-4">
           <label className="block mb-1 font-semibold text-gray-700">
             Status
@@ -143,6 +150,7 @@ const EditModel = () => {
           </select>
         </div>
 
+        {/* buttons */}
         <div className="flex gap-3 justify-end mt-5">
           <button
             onClick={closeEditModal}

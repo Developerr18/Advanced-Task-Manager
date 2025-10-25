@@ -68,7 +68,9 @@ const TaskColumns = () => {
           </div>
 
           {completedTasks.length > 0 ? (
-            completedTasks.map((task) => <TaskItem key={task.id} task={task} />)
+            completedTasks.map((task) => (
+              <TaskItem key={task._id} task={task} />
+            ))
           ) : (
             <EmptyTaskList />
           )}

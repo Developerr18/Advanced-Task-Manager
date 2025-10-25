@@ -85,7 +85,6 @@ const useTaskStore = create(
 
             if (res.data.success) {
               set((state) => ({ tasks: [...state.tasks, res.data.data] }));
-              console.log(res.data);
               toast.success(res.data.message);
             }
           } catch (err) {
@@ -106,7 +105,6 @@ const useTaskStore = create(
               `${backendURL}/api/tasks/delete/${id}`
             );
             if (res.data.success) {
-              console.log(res.data);
               toast.success(res.data.message);
             }
           } catch (err) {
@@ -135,7 +133,6 @@ const useTaskStore = create(
               }
             );
             if (res.data.success) {
-              console.log(res.data);
               toast.success(res.data.message);
             }
           } catch (err) {
@@ -145,18 +142,39 @@ const useTaskStore = create(
         }
       },
 
-      handleCompleteTask: (id) =>
+      // update task
+      handleCompleteTask: async (id) => {
+        const { token, backendURL } = get();
         set((state) => ({
           tasks: state.tasks.map((task) =>
-            task.id === id ? { ...task, status: "completed" } : task
+            task._id === id ? { ...task, status: "completed" } : task
           ),
-        })),
+        }));
+
+        if (token) {
+          try {
+            const res = await axios.put(
+              `${backendURL}/api/tasks/update/${id}`,
+              {
+                status: "completed",
+              }
+            );
+            if (res.data.success) {
+              toast.success(res.data.message);
+            }
+          } catch (err) {
+            console.error(err);
+            toast.error(err.response.data.message);
+          }
+        }
+      },
 
       openEditModal: (task) =>
         set({ selectedTask: task, isEditModalOpen: true }),
 
       closeEditModal: () => set({ selectedTask: null, isEditModalOpen: false }),
 
+      // update task
       updateTask: async (updatedTask) => {
         const { backendURL, token } = get();
 
@@ -173,7 +191,6 @@ const useTaskStore = create(
               updatedTask
             );
             if (res.data.success) {
-              console.log(res.data);
               toast.success(res.data.message);
             }
           } catch (err) {
