@@ -97,14 +97,21 @@ const useTaskStore = create(
       // delete task
       handleDeleteTask: async (id) => {
         const { token, backendURL } = get();
-        set((state) => ({ tasks: state.tasks.filter((t) => t._id !== id) }));
 
         if (token) {
           try {
             const res = await axios.delete(
-              `${backendURL}/api/tasks/delete/${id}`
+              `${backendURL}/api/tasks/delete/${id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
             );
             if (res.data.success) {
+              set((state) => ({
+                tasks: state.tasks.filter((t) => t._id !== id),
+              }));
               toast.success(res.data.message);
             }
           } catch (err) {
@@ -118,21 +125,25 @@ const useTaskStore = create(
       handleStartTask: async (id) => {
         const { token, backendURL } = get();
 
-        set((state) => ({
-          tasks: state.tasks.map((task) =>
-            task._id === id ? { ...task, status: "inProgress" } : task
-          ),
-        }));
-
         if (token) {
           try {
             const res = await axios.put(
               `${backendURL}/api/tasks/update/${id}`,
               {
                 status: "inProgress",
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
               }
             );
             if (res.data.success) {
+              set((state) => ({
+                tasks: state.tasks.map((task) =>
+                  task._id === id ? { ...task, status: "inProgress" } : task
+                ),
+              }));
               toast.success(res.data.message);
             }
           } catch (err) {
@@ -145,11 +156,6 @@ const useTaskStore = create(
       // update task
       handleCompleteTask: async (id) => {
         const { token, backendURL } = get();
-        set((state) => ({
-          tasks: state.tasks.map((task) =>
-            task._id === id ? { ...task, status: "completed" } : task
-          ),
-        }));
 
         if (token) {
           try {
@@ -157,9 +163,49 @@ const useTaskStore = create(
               `${backendURL}/api/tasks/update/${id}`,
               {
                 status: "completed",
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
               }
             );
             if (res.data.success) {
+              set((state) => ({
+                tasks: state.tasks.map((task) =>
+                  task._id === id ? { ...task, status: "completed" } : task
+                ),
+              }));
+              toast.success(res.data.message);
+            }
+          } catch (err) {
+            console.error(err);
+            toast.error(err.response.data.message);
+          }
+        }
+      },
+
+      // update task
+      updateTask: async (updatedTask) => {
+        const { backendURL, token } = get();
+
+        if (token) {
+          try {
+            const res = await axios.put(
+              `${backendURL}/api/tasks/update/${updatedTask._id}`,
+              updatedTask,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            if (res.data.success) {
+              set((state) => ({
+                tasks: state.tasks.map((task) =>
+                  task._id === updatedTask._id ? updatedTask : task
+                ),
+              }));
               toast.success(res.data.message);
             }
           } catch (err) {
@@ -173,32 +219,6 @@ const useTaskStore = create(
         set({ selectedTask: task, isEditModalOpen: true }),
 
       closeEditModal: () => set({ selectedTask: null, isEditModalOpen: false }),
-
-      // update task
-      updateTask: async (updatedTask) => {
-        const { backendURL, token } = get();
-
-        set((state) => ({
-          tasks: state.tasks.map((task) =>
-            task._id === updatedTask._id ? updatedTask : task
-          ),
-        }));
-
-        if (token) {
-          try {
-            const res = await axios.put(
-              `${backendURL}/api/tasks/update/${updatedTask._id}`,
-              updatedTask
-            );
-            if (res.data.success) {
-              toast.success(res.data.message);
-            }
-          } catch (err) {
-            console.error(err);
-            toast.error(err.response.data.message);
-          }
-        }
-      },
 
       setSearchTerm: (term) => set({ searchTerm: term }),
       setSelectedPriority: (priority) => set({ selectedPriority: priority }),

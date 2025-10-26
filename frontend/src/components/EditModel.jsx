@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import useTaskStore from "../store/taskStore";
-import { toast } from "react-toastify";
 
 const EditModel = () => {
   const { selectedTask, isEditModalOpen, closeEditModal, updateTask } =
@@ -32,7 +31,6 @@ const EditModel = () => {
 
   const handleSaveChanges = () => {
     updateTask({ ...selectedTask, ...formData });
-    toast.success("Task Updated Successfully");
     closeEditModal();
   };
 

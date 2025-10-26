@@ -67,12 +67,14 @@ export const getTasks = async (req, res) => {
 
 // update task
 export const updateTask = async (req, res) => {
-  const { id } = req.params;
-
   try {
-    const updatedTask = await TaskModel.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
+    const updatedTask = await TaskModel.findByIdAndUpdate(
+      { _id: req.params.id, user: req.user.userId },
+      req.body,
+      {
+        new: true,
+      }
+    );
     res.status(200).json({
       success: true,
       message: "Task updated successfully!",
@@ -90,10 +92,11 @@ export const updateTask = async (req, res) => {
 
 // delete task
 export const deleteTask = async (req, res) => {
-  const { id } = req.params;
-
   try {
-    const deletedTask = await TaskModel.findByIdAndDelete(id);
+    const deletedTask = await TaskModel.findByIdAndDelete({
+      _id: req.params.id,
+      user: req.user.userId,
+    });
     res.status(200).json({
       success: true,
       message: "Task deleted successfully!",

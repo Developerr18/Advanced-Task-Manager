@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post("/create", auth, createTask);
 router.get("/get", auth, getTasks);
-router.put("/update/:id", updateTask);
-router.delete("/delete/:id", deleteTask);
+router.put("/update/:id", auth, updateTask);
+router.delete("/delete/:id", auth, deleteTask);
 
 export default router;
