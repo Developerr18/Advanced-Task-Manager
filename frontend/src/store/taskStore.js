@@ -21,9 +21,10 @@ const useTaskStore = create(
     (set, get) => ({
       ...initialState,
 
+      // set token
       setToken: (token) => set({ token }),
 
-      // get tasks
+      /************** fetch tasks method **************/
       fetchTasks: async () => {
         const { token, backendURL } = get();
         if (token) {
@@ -46,7 +47,7 @@ const useTaskStore = create(
         }
       },
 
-      // handle logout
+      /************** logout method **************/
       handleLogout: (navigate) => {
         const { token } = get();
         if (token) {
@@ -57,11 +58,11 @@ const useTaskStore = create(
         }
       },
 
-      // add task
+      /************** add task method **************/
       addTask: async (task) => {
         const { token, backendURL } = get();
 
-        const newTask = {
+        let newTask = {
           title: task.title,
           description: task.description || "No description",
           category: task.category || "other",
@@ -82,7 +83,6 @@ const useTaskStore = create(
                 },
               }
             );
-
             if (res.data.success) {
               set((state) => ({ tasks: [...state.tasks, res.data.data] }));
               toast.success(res.data.message);
@@ -91,10 +91,15 @@ const useTaskStore = create(
             console.error(err);
             toast.error(err.response.data.message);
           }
+        } else {
+          // for unauthenticated users
+          newTask = { ...newTask, _id: Date.now() };
+          set((state) => ({ tasks: [...state.tasks, newTask] }));
+          toast.success("Task added successfully!");
         }
       },
 
-      // delete task
+      /************** delete task method **************/
       handleDeleteTask: async (id) => {
         const { token, backendURL } = get();
 
@@ -118,10 +123,13 @@ const useTaskStore = create(
             console.error(err);
             toast.error(err.response.data.message);
           }
+        } else {
+          set((state) => ({ tasks: state.tasks.filter((t) => t._id !== id) }));
+          toast.success("Task deleted successfully!");
         }
       },
 
-      // update task
+      /************** start task method **************/
       handleStartTask: async (id) => {
         const { token, backendURL } = get();
 
@@ -150,10 +158,17 @@ const useTaskStore = create(
             console.error(err);
             toast.error(err.response.data.message);
           }
+        } else {
+          set((state) => ({
+            tasks: state.tasks.map((task) =>
+              task._id === id ? { ...task, status: "inProgress" } : task
+            ),
+          }));
+          toast.success("Task updated successfully!");
         }
       },
 
-      // update task
+      /************** complete task method **************/
       handleCompleteTask: async (id) => {
         const { token, backendURL } = get();
 
@@ -182,10 +197,17 @@ const useTaskStore = create(
             console.error(err);
             toast.error(err.response.data.message);
           }
+        } else {
+          set((state) => ({
+            tasks: state.tasks.map((task) =>
+              task._id === id ? { ...task, status: "completed" } : task
+            ),
+          }));
+          toast.success("Task completed successfully");
         }
       },
 
-      // update task
+      /************** update task method **************/
       updateTask: async (updatedTask) => {
         const { backendURL, token } = get();
 
@@ -212,14 +234,23 @@ const useTaskStore = create(
             console.error(err);
             toast.error(err.response.data.message);
           }
+        } else {
+          set((state) => ({
+            tasks: state.tasks.map((task) =>
+              task._id === updatedTask._id ? updatedTask : task
+            ),
+          }));
+          toast.success("Task updated successfully!");
         }
       },
 
+      /************** modal methods **************/
       openEditModal: (task) =>
         set({ selectedTask: task, isEditModalOpen: true }),
 
       closeEditModal: () => set({ selectedTask: null, isEditModalOpen: false }),
 
+      /************** filter methods **************/
       setSearchTerm: (term) => set({ searchTerm: term }),
       setSelectedPriority: (priority) => set({ selectedPriority: priority }),
       setSelectedCategory: (category) => set({ selectedCategory: category }),
