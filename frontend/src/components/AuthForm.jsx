@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import useTaskStore from "../store/taskStore";
 import axios from "axios";
+import { useGoogleLogin } from "@react-oauth/google";
 
 export default function AuthForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -113,6 +114,32 @@ export default function AuthForm() {
       }, 5000);
     }
   };
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (credentialResponse) => {
+      const idToken = credentialResponse.credential;
+
+      try {
+        const res = await axios.post("/api/auth/google-login", {
+          token: idToken,
+        });
+
+        if (res.data.success) {
+          setToken(res.data.token);
+          navigate("/dashboard");
+        }
+      } catch (error) {
+        console.error(
+          "Google login failed:",
+          error.response?.data || error.message
+        );
+      }
+    },
+    onError: () => {
+      console.error("Google login failed");
+    },
+    flow: "implicit",
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-10">
@@ -365,7 +392,10 @@ export default function AuthForm() {
 
           {/* Social Buttons */}
           <div className="grid grid-cols-2 gap-3">
-            <button className="bg-white/5 hover:bg-white/10 border border-white/10 text-white py-2 rounded-lg transition font-medium text-sm">
+            <button
+              onClick={handleGoogleLogin}
+              className="bg-white/5 hover:bg-white/10 border border-white/10 text-white py-2 rounded-lg transition font-medium text-sm"
+            >
               Google
             </button>
             <button className="bg-white/5 hover:bg-white/10 border border-white/10 text-white py-2 rounded-lg transition font-medium text-sm">

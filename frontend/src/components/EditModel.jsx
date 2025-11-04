@@ -16,27 +16,13 @@ const EditModel = () => {
   // update form data when selected task changes
   useEffect(() => {
     if (selectedTask) {
-      // Handle different date formats for dueDate
-      let formattedDueDate = "";
-      if (selectedTask.dueDate) {
-        if (typeof selectedTask.dueDate === "string") {
-          // Handle ISO string format or date string format
-          formattedDueDate = selectedTask.dueDate.includes("T")
-            ? selectedTask.dueDate.split("T")[0]
-            : selectedTask.dueDate.split(" ")[0];
-        } else if (selectedTask.dueDate instanceof Date) {
-          // Handle Date object
-          formattedDueDate = selectedTask.dueDate.toISOString().split("T")[0];
-        }
-      }
-
       setFormData({
         title: selectedTask.title,
         category: selectedTask.category,
         priority: selectedTask.priority,
         description: selectedTask.description,
         status: selectedTask.status,
-        dueDate: formattedDueDate,
+        dueDate: selectedTask.dueDate ? selectedTask.dueDate : "",
       });
     }
   }, [selectedTask]);
@@ -136,14 +122,7 @@ const EditModel = () => {
           </label>
           <input
             type="date"
-            value={
-              formData.dueDate
-                ? formData.dueDate.includes("T")
-                  ? formData.dueDate.split("T")[0]
-                  : formData.dueDate.split(" ")[0]
-                : ""
-            }
-            min={new Date().toISOString().split("T")[0]}
+            value={formData.dueDate ? formData.dueDate.split("T")[0] : ""}
             onChange={(e) =>
               setFormData({ ...formData, dueDate: e.target.value })
             }
