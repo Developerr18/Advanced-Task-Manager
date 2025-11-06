@@ -9,6 +9,7 @@ const TaskItem = ({ task }) => {
     openEditModal,
   } = useTaskStore();
 
+  const warning = getDueWarning(task.dueDate);
   const formattedDueDate = task.dueDate && format(task.dueDate, "dd-MM-yyyy");
 
   return (
@@ -28,13 +29,19 @@ const TaskItem = ({ task }) => {
         {task.description}
       </p>
 
-      <div className="flex flex-col items-center gap-4 mt-4 pt-4 border-t border-gray-200">
+      <div className="flex flex-col items-center gap-3 mt-2 pt-4 border-t border-gray-200">
         <div className="flex items-center gap-2">
           <span className="px-2 py-1 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-700">
             {task.priority}
           </span>
           <span className="text-xs text-gray-500">📅 {formattedDueDate}</span>
         </div>
+
+        {warning && (
+          <div className="flex items-center">
+            <span className="text-sm text-red-500">{warning}</span>
+          </div>
+        )}
 
         <div className="flex gap-2 flex-wrap">
           {task.status === "todo" && (
@@ -79,3 +86,22 @@ const TaskItem = ({ task }) => {
 };
 
 export default TaskItem;
+
+function getDueWarning(dueDateStr) {
+  if (dueDateStr) {
+    const now = new Date();
+    const dueDate = new Date(dueDateStr);
+    const diffMs = dueDate - now;
+    const diffHours = diffMs / (1000 * 60 * 60);
+
+    if (diffHours <= 0) {
+      return "❌ Task is overdue!";
+    } else if (diffHours <= 1) {
+      return "⚠️ Task is due within an hour!";
+    } else if (diffHours <= 24) {
+      return "⚠️ Task is due within a day!";
+    } else {
+      return ""; // No warning
+    }
+  }
+}

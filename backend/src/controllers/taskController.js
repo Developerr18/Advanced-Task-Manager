@@ -111,3 +111,24 @@ export const deleteTask = async (req, res) => {
     });
   }
 };
+
+export const getDueSoonTasks = async (req, res) => {
+  try {
+    const dueSoonTasks = await TaskModel.find({
+      user: req.user.userId,
+      dueDate: { $gt: new Date() },
+    }).sort({ dueDate: 1 });
+    res.status(200).json({
+      success: true,
+      message: "Tasks fetched successfully!",
+      data: dueSoonTasks,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error occured during task fetching!",
+      error: err.message,
+    });
+  }
+};

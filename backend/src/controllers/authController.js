@@ -2,6 +2,9 @@ import UserModel from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 
+// google login
+export const googleLogin = async (req, res) => {};
+
 // register user
 export const register = async (req, res) => {
     try {
